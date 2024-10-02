@@ -20,15 +20,8 @@ npm create vite@latest
 https://clinquant-swan-1b49c4.netlify.app/
 ```
 
-You can interact
 [![Visit Site](https://img.shields.io/badge/Visit-Website-blue?style=for-the-badge)](https://clinquant-swan-1b49c4.netlify.app/)
 
-
-<button 
-    style="padding: 10px 20px; font-size: 16px; color: white; background-color: #4CAF50; border: none; border-radius: 5px; cursor: pointer;"
-    onclick="window.open('https://clinquant-swan-1b49c4.netlify.app/', '_blank')">
-    Visit FUNKO Shop
-</button>
 
 ## Screenshots
 
