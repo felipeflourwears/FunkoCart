@@ -1,15 +1,8 @@
 import React from 'react'
-import { useMemo } from 'react';
+import useCart from '../hooks/useCart'
 //import  { Fragment } from 'react' --> Para Fragmentar bloques <React.Fragment> o <Fragment>
 
-const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart}) => {
-
-    //const isEmpty = () => cart.length === 0; se manda a llamar como isEmpty()
-    //const cartTotal = () => cart.reduce((total, item) => total + (item.quantity * item.price), 0)
-
-    const isEmpty = useMemo( () => cart.length === 0, [cart])
-    const cartTotal = useMemo(() => cart.reduce((total, item) => total + (item.quantity * item.price), 0), [cart])
-
+const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, isEmpty, cartTotal}) => {
 
     return (
         <header className="py-5 header">

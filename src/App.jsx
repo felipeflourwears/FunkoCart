@@ -1,89 +1,13 @@
-import { useState, useEffect } from "react"
+
 import Header from "./components/Header"
 import Funko from "./components/Funko"
-import { db } from "./data/db";
+import useCart from "./hooks/useCart";
 
 //Extension React Developer Tools
 
 function App() {
 
-  const initialCart = () =>{
-    const localStorageCart = localStorage.getItem('cart')
-    return localStorageCart ? JSON.parse(localStorageCart): []
-  }
-
-  const [data] = useState(db)
-  const [cart, setCart] = useState(initialCart)
-  const MAX_ITEMS = 5
-  const MIN_ITEMS = 1
-
-  useEffect(()=>{
-    //No almacena objetos, ni arreglos, solo strings
-    localStorage.setItem('cart', JSON.stringify(cart))
-  }, [cart])
-  
-  const addToCart = (item) => {
-    const itemExists = cart.findIndex(funko=> funko.id === item.id )
-    if(itemExists>=0){
-      if(cart[itemExists].quantity >= MAX_ITEMS) return
-      const updatedCart = [...cart]
-      updatedCart[itemExists].quantity += 1
-      setCart(updatedCart)
-      console.log("Ya existen: ", updatedCart[itemExists].quantity)
-    }else{
-      console.log("No existe agregando: ", item.quantity)
-      item.quantity = 1
-      setCart((prevState)=>[...prevState, item])
-    }
-    
-  }
-
-
-  
-  const removeFromCart = (id) => {
-   console.log("Eliminando...", id)
-   setCart(prevCart => prevCart.filter(funko => funko.id !==id))
-  }
-
- 
-  
-  const increaseQuantity = (id) => {
-    console.log("Incrementanoo....", id)
-    const updatedCart = cart.map( item =>{
-      if(item.id === id && item.quantity < MAX_ITEMS){
-        return {
-          ...item,
-          quantity: item.quantity + 1
-        }
-      }
-      return item
-    })
-    setCart(updatedCart)
-  }
-
-  const decreaseQuantity = (id) => {
-    console.log("Decrementando...", id)
-    const updatedCart = cart.map(item =>{
-      if(item.id=== id && item.quantity > MIN_ITEMS){
-        return {
-          ...item,
-          quantity: item.quantity - 1
-        }
-      }
-      return item
-    })
-    setCart(updatedCart)
-  }
-  
-  const clearCart = () => {
-    console.log("Limpiando...")
-    setCart([])
-  }
-
-  
-
-
-  
+  const { data, cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, isEmpty, cartTotal} = useCart()
 
   return (
     <>
@@ -93,6 +17,8 @@ function App() {
         increaseQuantity={increaseQuantity}
         decreaseQuantity={decreaseQuantity}
         clearCart={clearCart}
+        isEmpty={isEmpty}
+        cartTotal={cartTotal}
       />
       <main className="container-xl mt-5">
           <h2 className="text-center">Our Collection</h2>
@@ -103,7 +29,6 @@ function App() {
                 <Funko
                   key={funko.id}
                   funko={funko}
-                  setCart={setCart}
                   addToCart={addToCart}
                 />
                 )

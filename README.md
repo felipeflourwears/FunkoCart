@@ -53,6 +53,13 @@ https://clinquant-swan-1b49c4.netlify.app/
 Contributions are welcome. Please open an issue or submit a pull request to suggest changes or improvements.
 
 
+# Dependencies Hooks
+   ```bash
+   npm install
+   ```
+
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
