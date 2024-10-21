@@ -1,7 +1,12 @@
-import React from 'react'
+import type { Funko } from '../types'
 
-const Funko = ({funko, addToCart}) => {
-    const {id, name, image, description, price} = funko
+type FunkoProps= {
+    funko: Funko,
+    addToCart: (item: Funko) => void
+}
+
+const Funko = ({funko, addToCart} : FunkoProps) => {
+    const {name, image, description, price} = funko
     
     return (
         <div className="col-md-6 col-lg-4 my-4">

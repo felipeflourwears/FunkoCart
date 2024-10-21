@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from "react"
 import { db } from "../data/db";
-
+import type { CartItem, Funko, FunkoID } from "../types";
 
 const useCart = () => {
     
-    const initialCart = () =>{
+    const initialCart = () : CartItem[] =>{
         const localStorageCart = localStorage.getItem('cart')
         return localStorageCart ? JSON.parse(localStorageCart): []
     }
@@ -19,7 +19,7 @@ const useCart = () => {
         localStorage.setItem('cart', JSON.stringify(cart))
     }, [cart])
       
-    const addToCart = (item) => {
+    const addToCart = (item: Funko) => {
         const itemExists = cart.findIndex(funko=> funko.id === item.id )
         if(itemExists>=0){
             if(cart[itemExists].quantity >= MAX_ITEMS) return
@@ -28,18 +28,18 @@ const useCart = () => {
             setCart(updatedCart)
             console.log("Ya existen: ", updatedCart[itemExists].quantity)
         }else{
-            console.log("No existe agregando: ", item.quantity)
-            item.quantity = 1
-            setCart((prevState)=>[...prevState, item])
+            const newItem: CartItem = {...item, quantity : 1}
+            console.log("No existe agregando: ", newItem)
+            setCart([...cart, newItem])
         }
     }
     
-    const removeFromCart = (id) => {
+    const removeFromCart = (id : FunkoID) => {
         console.log("Eliminando...", id)
         setCart(prevCart => prevCart.filter(funko => funko.id !==id))
     }
      
-    const increaseQuantity = (id) => {
+    const increaseQuantity = (id : FunkoID) => {
         console.log("Incrementanoo....", id)
         const updatedCart = cart.map( item =>{
             if(item.id === id && item.quantity < MAX_ITEMS){
@@ -53,7 +53,7 @@ const useCart = () => {
         setCart(updatedCart)
     }
     
-    const decreaseQuantity = (id) => {
+    const decreaseQuantity = (id: FunkoID) => {
         console.log("Decrementando...", id)
         const updatedCart = cart.map(item =>{
             if(item.id=== id && item.quantity > MIN_ITEMS){

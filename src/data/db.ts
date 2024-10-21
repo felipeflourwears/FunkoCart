@@ -1,4 +1,6 @@
-export const db = [
+import type { Funko } from '../types'
+
+export const db : Funko[] = [
     {
         id: 1,
         name: 'Ezra Bridger',

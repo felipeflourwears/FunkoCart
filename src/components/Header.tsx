@@ -1,8 +1,18 @@
-import React from 'react'
-import useCart from '../hooks/useCart'
 //import  { Fragment } from 'react' --> Para Fragmentar bloques <React.Fragment> o <Fragment>
 
-const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, isEmpty, cartTotal}) => {
+import type { CartItem, FunkoID } from '../types'
+
+type HeaderProps = {
+    cart: CartItem[]
+    removeFromCart: (id: FunkoID) => void
+    increaseQuantity: (id: FunkoID) => void
+    decreaseQuantity: (id: FunkoID) => void
+    clearCart: () => void
+    isEmpty: boolean
+    cartTotal: number
+}
+
+const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, isEmpty, cartTotal} : HeaderProps) => {
 
     return (
         <header className="py-5 header">
