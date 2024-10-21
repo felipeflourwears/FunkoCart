@@ -1,18 +1,16 @@
-//import  { Fragment } from 'react' --> Para Fragmentar bloques <React.Fragment> o <Fragment>
-
-import type { CartItem, FunkoID } from '../types'
+import type { CartItem } from '../types'
+import { useMemo } from 'react'
+import { CartActions } from '../reducers/cart-reducer'
 
 type HeaderProps = {
     cart: CartItem[]
-    removeFromCart: (id: FunkoID) => void
-    increaseQuantity: (id: FunkoID) => void
-    decreaseQuantity: (id: FunkoID) => void
-    clearCart: () => void
-    isEmpty: boolean
-    cartTotal: number
+    dispatch: React.Dispatch<CartActions> 
 }
 
-const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, isEmpty, cartTotal} : HeaderProps) => {
+const Header = ({cart, dispatch } : HeaderProps) => {
+    
+    const isEmpty = useMemo( () => cart.length === 0, [cart])
+    const cartTotal = useMemo(() => cart.reduce((total, item) => total + (item.quantity * item.price), 0), [cart])
 
     return (
         <header className="py-5 header">
@@ -58,7 +56,9 @@ const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clear
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-dark"
-                                                                onClick={()=>decreaseQuantity(funko.id)}
+                                                                onClick={()=>dispatch({ type: 'decrease-quantity', payload: {
+                                                                    id: funko.id
+                                                                }})}
                                                             >
                                                                 -
                                                             </button>
@@ -66,7 +66,9 @@ const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clear
                                                             <button
                                                                 type="button"
                                                                 className="btn btn-dark"
-                                                                onClick={()=> increaseQuantity(funko.id)}
+                                                                onClick={() => dispatch({ type: 'increase-quantity', payload:{
+                                                                    id: funko.id
+                                                                }})}
                                                             >
                                                                 +
                                                             </button>
@@ -75,7 +77,7 @@ const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clear
                                                             <button
                                                                 className="btn btn-danger"
                                                                 type="button"
-                                                                onClick={()=> removeFromCart(funko.id)}
+                                                                onClick={() => dispatch({type: 'remove-from-cart', payload: {id: funko.id}}) }
                                                             >
                                                                 X
                                                             </button>
@@ -87,7 +89,7 @@ const Header = ({cart, removeFromCart, increaseQuantity, decreaseQuantity, clear
                                         <p className="text-end">Total to pay: <span className="fw-bold">${cartTotal}</span></p>
                                     </>
                                 )}
-                                <button className="btn btn-dark w-100 mt-3 p-2" onClick={()=> clearCart()}>Empty Cart</button>
+                                <button className="btn btn-dark w-100 mt-3 p-2" onClick={()=> dispatch({type: 'clear-cart'})}>Empty Cart</button>
                             </div>
                         </div>
                     </nav>

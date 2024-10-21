@@ -1,35 +1,35 @@
-
+import { useReducer, useEffect } from "react";
 import Header from "./components/Header"
 import Funko from "./components/Funko"
-import useCart from "./hooks/useCart";
+import { cartReducer, initialState } from "./reducers/cart-reducer";
 
 //Extension React Developer Tools
 
 function App() {
 
-  const { data, cart, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, isEmpty, cartTotal} = useCart()
+  const [state, dispatch] = useReducer(cartReducer, initialState)
 
+  useEffect(()=>{
+      //No almacena objetos, ni arreglos, solo strings
+      localStorage.setItem('cart', JSON.stringify(state.cart))
+  }, [state.cart])
+  
   return (
     <>
       <Header 
-        cart={cart}
-        removeFromCart={removeFromCart}
-        increaseQuantity={increaseQuantity}
-        decreaseQuantity={decreaseQuantity}
-        clearCart={clearCart}
-        isEmpty={isEmpty}
-        cartTotal={cartTotal}
+        cart={state.cart}
+        dispatch={dispatch}
       />
       <main className="container-xl mt-5">
           <h2 className="text-center">Our Collection</h2>
 
           <div className="row mt-5">
-              {data.map((funko)=>{
+              {state.data.map((funko)=>{
                 return(
                 <Funko
                   key={funko.id}
                   funko={funko}
-                  addToCart={addToCart}
+                  dispatch={dispatch}
                 />
                 )
               })}

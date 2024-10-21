@@ -1,11 +1,12 @@
 import type { Funko } from '../types'
+import { CartActions } from '../reducers/cart-reducer'
 
 type FunkoProps= {
     funko: Funko,
-    addToCart: (item: Funko) => void
+    dispatch: React.Dispatch<CartActions>
 }
 
-const Funko = ({funko, addToCart} : FunkoProps) => {
+const Funko = ({funko, dispatch} : FunkoProps) => {
     const {name, image, description, price} = funko
     
     return (
@@ -19,7 +20,9 @@ const Funko = ({funko, addToCart} : FunkoProps) => {
             <button 
                 type="button"
                 className="btn btn-dark w-100"
-                onClick={() => addToCart(funko)}
+                onClick={() => dispatch({type: "add-to-cart", payload: {
+                    item: funko   
+                }})}
             >Add to Cart</button>
         </div>
     );
